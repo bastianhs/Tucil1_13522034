@@ -41,3 +41,26 @@ def calculate_reward(buffer_list, sequence_list, reward_list):
             reward += reward_list[i]
     
     return reward
+
+
+def is_token_valid(token):
+    if len(token) != 2:
+        return False
+    return token.isalnum()
+
+
+def is_elements_unique(list):
+    stop = False
+    i = 0
+    while i < len(list) - 1 and not stop:
+        j = i + 1
+        while j < len(list) and not stop:
+            if list[i] == list[j]:
+                stop = True
+            else:
+                j += 1
+        
+        if not stop:
+            i += 1
+    
+    return not stop

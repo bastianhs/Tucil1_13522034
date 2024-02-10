@@ -1,32 +1,100 @@
-import copy, time
+import copy, time, random
 from functions import *
 
 
-# read input file
-input_file_name = input("Masukkan nama file input: (file berada di dalam folder test)\n")
-with open("test/" + input_file_name, "r") as file_input:
-    
-    # read buffer size
-    buffer_size = int(file_input.readline())
-    
-    # read matrix dimension
-    matrix_dimension = file_input.readline().split()
-    matrix_height = int(matrix_dimension[0])
-    matrix_width = int(matrix_dimension[1])
-    
-    # read matrix content
-    matrix = [file_input.readline().split() for i in range(matrix_height)]
-    
-    # read number of sequences
-    number_of_sequences = int(file_input.readline())
+# player choose input from file or randomized
+while True:
+    input_choice = input("Apakah input dari file atau acak? (file/acak)\n")
+    if input_choice == "file" or input_choice == "acak":
+        break
+    print("Input tidak valid, coba lagi.\n")
 
-    # read sequences and its rewards
-    sequences = [[] for i in range(number_of_sequences)]
-    rewards = [0 for i in range(number_of_sequences)]
-    for i in range(number_of_sequences):
-        sequences[i] = file_input.readline().split()
-        rewards[i] = int(file_input.readline())
+if input_choice == "file":
+    # read input file
+    input_file_name = input("Masukkan nama file input: (file berada di dalam folder test)\n")
+    with open("test/" + input_file_name, "r") as file_input:
+        
+        # read buffer size
+        buffer_size = int(file_input.readline())
+        
+        # read matrix dimension
+        matrix_dimension = file_input.readline().split(sep=" ")
+        matrix_height = int(matrix_dimension[0])
+        matrix_width = int(matrix_dimension[1])
+        
+        # read matrix content
+        matrix = [file_input.readline().split(sep=" ") for i in range(matrix_height)]
+        
+        # read number of sequences
+        num_of_sequences = int(file_input.readline())
 
+        # read sequences and its rewards
+        sequences = [[] for i in range(num_of_sequences)]
+        rewards = [0 for i in range(num_of_sequences)]
+        for i in range(num_of_sequences):
+            sequences[i] = file_input.readline().split(sep=" ")
+            rewards[i] = int(file_input.readline())
+else:
+    while True:
+        # enter the data needed for random generator
+        print("""Masukkan data berikut:
+              1. Banyak token unik
+              2. Token unik (dipisahkan dengan spasi)
+              3. Ukuran buffer
+              4. Ukuran baris dan kolom matriks (dipisahkan dengan spasi)
+              5. Banyak sekuens
+              6. Ukuran maksimal sekuens""")
+        num_of_token = int(input())
+        tokens = map(str.upper, input().split(sep=" "))
+        buffer_size = int(input())
+        matrix_dimension = input().split(sep=" ")
+        matrix_height = int(matrix_dimension[0])
+        matrix_width = int(matrix_dimension[1])
+        num_of_sequences = int(input())
+        max_size_of_sequences = int(input())
+
+        # check input validity
+        input_valid = True
+        if num_of_token <= 0:
+            input_valid = False
+            print("Banyak token harus lebih dari 0.")
+        
+        if len(tokens) != num_of_token:
+            input_valid = False
+            print("Banyak token tidak sesuai dengan banyaknya token yang dimasukkan.")
+        
+        if not all(map(is_token_valid, tokens)):
+            input_valid = False
+            print("Masukan token tidak valid, masing-masing harus 2 karakter alfanumerik.")
+        
+        if not is_elements_unique(tokens):
+            input_valid = False
+            print("Masukan token tidak unik.")
+
+        if buffer_size < 2:
+            input_valid = False
+            print("Ukuran buffer minimal adalah 2.")
+        
+        if matrix_height < 1 or matrix_width < 1:
+            input_valid = False
+            print("Ukuran baris dan kolom matriks minimal adalah 1.")
+        
+        if num_of_sequences < 1:
+            input_valid = False
+            print("Banyak sekuens minimal adalah 1.")
+        
+        if max_size_of_sequences < 2:
+            input_valid = False
+            print("Ukuran maksimal sekuens paling kecil adalah 2.")
+        
+        if input_valid:
+            break
+    
+    # random matrix, sequence, and reward generator
+    print("Generating matrix ...")
+    matrix = [[random.choice(tokens) for j in range(matrix_width)] for i in range(matrix_height)]
+    print("Generating sequence ...")
+    
 
 # find the solution
 
@@ -38,8 +106,7 @@ while True:
     start_position = int(input(f"Pilih posisi kolom token di barisan paling atas: (1 - {matrix_width})\n")) - 1
     if 0 <= start_position <= matrix_width - 1:
         break
-
-    print("Input tidak valid, coba lagi !\n")
+    print("Input tidak valid, coba lagi.\n")
 
 start_time = time.time()
 
