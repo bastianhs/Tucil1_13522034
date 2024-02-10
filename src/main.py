@@ -45,7 +45,7 @@ else:
               5. Banyak sekuens
               6. Ukuran maksimal sekuens""")
         num_of_token = int(input())
-        tokens = map(str.upper, input().split(sep=" "))
+        tokens = list(map(str.upper, input().split(sep=" ")))
         buffer_size = int(input())
         matrix_dimension = input().split(sep=" ")
         matrix_height = int(matrix_dimension[0])
@@ -91,10 +91,42 @@ else:
             break
     
     # random matrix, sequence, and reward generator
+    print()
     print("Generating matrix ...")
-    matrix = [[random.choice(tokens) for j in range(matrix_width)] for i in range(matrix_height)]
-    print("Generating sequence ...")
+    matrix = [random.choices(tokens, k=matrix_width) for i in range(matrix_height)]
+    print("Generating sequences and rewards ...")
+    sequences = [[] for i in range(num_of_sequences)]
+    rewards = [0 for i in range(num_of_sequences)]
+    for i in range(num_of_sequences):
+        sequence_size = random.randrange(2, max_size_of_sequences + 1)
+        sequences[i] = random.choices(tokens, k=sequence_size)
+        rewards[i] = random.randrange(-50, 51, 10)
     
+    # display matrix, sequences, and rewards
+    print()
+    print("Matriks yang dihasilkan:")
+    for i in range(matrix_height):
+        for j in range(matrix_width):
+            print(matrix[i][j], end="")
+            if j < matrix_width - 1:
+                print(end=" ")
+            else:
+                print()
+    
+    print()
+    
+    print("Sequence dan reward yang dihasilkan:")
+    for i in range(num_of_sequences):
+        print(f"{i + 1}. ", end="")
+        for j in range(len(sequences[i])):
+            print(sequences[i][j], end=" ")
+            if j < len(sequences[i]) - 1:
+                print(end=" ")
+            else:
+                print()
+        
+        print(f"   {rewards[i]}")
+        print()
 
 # find the solution
 
@@ -148,6 +180,7 @@ while MIN_BUFFER_SIZE <= i <= buffer_size:
                     temp_buffer.pop()
                     temp_coordinates.pop()
                     j += 1
+                
             else:
                 j += 1
         
@@ -156,6 +189,7 @@ while MIN_BUFFER_SIZE <= i <= buffer_size:
             j = temp_coordinates[len(temp_coordinates) - 1][1] + 1
             temp_buffer.pop()
             temp_coordinates.pop()
+        
     else:
         go_longer = False
         while j < matrix_width and not go_longer:
@@ -177,6 +211,7 @@ while MIN_BUFFER_SIZE <= i <= buffer_size:
                     temp_buffer.pop()
                     temp_coordinates.pop()
                     j += 1
+                
             else:
                 j += 1
         
@@ -192,6 +227,10 @@ coordinates = [[b + 1, a + 1] for [a, b] in coordinates]
 end_time = time.time()
 
 # display result to terminal
+print()
+print("Hasil pencarian:")
+print()
+
 print(total_reward)
 print(*buffer_solution, sep=" ")
 for i in coordinates:
