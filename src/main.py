@@ -54,7 +54,7 @@ else:
               5. Banyak sekuens
               6. Ukuran maksimal sekuens""")
         num_of_token = int(input())
-        tokens = list(map(str.upper, input().split(sep=" ")))
+        tokens = list(input().split(sep=" "))
         buffer_size = int(input())
         matrix_dimension = input().split(sep=" ")
         matrix_height = int(matrix_dimension[0])
@@ -251,7 +251,7 @@ for i in coordinates:
 print()
 
 duration = end_time - start_time
-print(f"{round(duration * 1000)} ms\n")
+print(f"{duration * 1000} ms\n")
 
 # ask user to save the result
 while True:
@@ -282,4 +282,4 @@ if save_solution == "y":
             file_output.write(f"{i[0]}, {i[1]}\n")
         
         # write time execution
-        file_output.write(f"\n{round(duration * 1000)} ms\n")
+        file_output.write(f"\n{duration * 1000} ms\n")
