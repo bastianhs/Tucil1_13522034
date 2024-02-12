@@ -18,12 +18,12 @@ if input_choice == "file":
         buffer_size = int(file_input.readline())
         
         # read matrix dimension
-        matrix_dimension = file_input.readline().split(sep=" ")
+        matrix_dimension = file_input.readline().split()
         matrix_height = int(matrix_dimension[0])
         matrix_width = int(matrix_dimension[1])
         
         # read matrix content
-        matrix = [file_input.readline().split(sep=" ") for i in range(matrix_height)]
+        matrix = [file_input.readline().split() for i in range(matrix_height)]
         
         # read number of sequences
         num_of_sequences = int(file_input.readline())
@@ -32,7 +32,7 @@ if input_choice == "file":
         sequences = [[] for i in range(num_of_sequences)]
         rewards = [0 for i in range(num_of_sequences)]
         for i in range(num_of_sequences):
-            sequences[i] = file_input.readline().split(sep=" ")
+            sequences[i] = file_input.readline().split()
             rewards[i] = int(file_input.readline())
 else:
     while True:
