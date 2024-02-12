@@ -145,15 +145,6 @@ else:
 
 # find the solution
 
-# player choose starting position
-while True:
-    start_position = int(input(f"Pilih posisi kolom token di barisan paling atas: (1 - {matrix_width})\n")) - 1
-    print()
-    if 0 <= start_position <= matrix_width - 1:
-        break
-    
-    print("Input tidak valid, coba lagi.\n")
-
 start_time = time.time()
 
 # solution variables
@@ -168,72 +159,73 @@ temp_coordinates = []
 
 # process
 MIN_BUFFER_SIZE = 2
-temp_buffer.append(matrix[0][start_position])
-temp_coordinates.append([0, start_position])
-i = 2
-j = 0
-while MIN_BUFFER_SIZE <= i <= buffer_size:
-    if is_even(i):
-        go_longer = False
-        while j < matrix_height and not go_longer:
-            last_x_coordinate = temp_coordinates[len(temp_coordinates) - 1][1]
-            if not [j, last_x_coordinate] in temp_coordinates:
-                temp_buffer.append(matrix[j][last_x_coordinate])
-                temp_coordinates.append([j, last_x_coordinate])
-                temp_reward = calculate_reward(temp_buffer, sequences, rewards)
-                if temp_reward > total_reward:
-                    total_reward = temp_reward
-                    buffer_solution = copy.deepcopy(temp_buffer)
-                    coordinates = copy.deepcopy(temp_coordinates)
-                
-                if i < buffer_size:
-                    i += 1
-                    j = 0
-                    go_longer = True
+for start_position in range(0, matrix_width):
+    temp_buffer.append(matrix[0][start_position])
+    temp_coordinates.append([0, start_position])
+    i = 2
+    j = 0
+    while MIN_BUFFER_SIZE <= i <= buffer_size:
+        if is_even(i):
+            go_longer = False
+            while j < matrix_height and not go_longer:
+                last_x_coordinate = temp_coordinates[len(temp_coordinates) - 1][1]
+                if not [j, last_x_coordinate] in temp_coordinates:
+                    temp_buffer.append(matrix[j][last_x_coordinate])
+                    temp_coordinates.append([j, last_x_coordinate])
+                    temp_reward = calculate_reward(temp_buffer, sequences, rewards)
+                    if temp_reward > total_reward:
+                        total_reward = temp_reward
+                        buffer_solution = copy.deepcopy(temp_buffer)
+                        coordinates = copy.deepcopy(temp_coordinates)
+                    
+                    if i < buffer_size:
+                        i += 1
+                        j = 0
+                        go_longer = True
+                    else:
+                        temp_buffer.pop()
+                        temp_coordinates.pop()
+                        j += 1
+                    
                 else:
-                    temp_buffer.pop()
-                    temp_coordinates.pop()
                     j += 1
-                
-            else:
-                j += 1
-        
-        if not go_longer:
-            i -= 1
-            j = temp_coordinates[len(temp_coordinates) - 1][1] + 1
-            temp_buffer.pop()
-            temp_coordinates.pop()
-        
-    else:
-        go_longer = False
-        while j < matrix_width and not go_longer:
-            last_y_coordinate = temp_coordinates[len(temp_coordinates) - 1][0]
-            if not [last_y_coordinate, j] in temp_coordinates:
-                temp_buffer.append(matrix[last_y_coordinate][j])
-                temp_coordinates.append([last_y_coordinate, j])
-                temp_reward = calculate_reward(temp_buffer, sequences, rewards)
-                if temp_reward > total_reward:
-                    total_reward = temp_reward
-                    buffer_solution = copy.deepcopy(temp_buffer)
-                    coordinates = copy.deepcopy(temp_coordinates)
-                
-                if i < buffer_size:
-                    i += 1
-                    j = 0
-                    go_longer = True
+            
+            if not go_longer:
+                i -= 1
+                j = temp_coordinates[len(temp_coordinates) - 1][1] + 1
+                temp_buffer.pop()
+                temp_coordinates.pop()
+            
+        else:
+            go_longer = False
+            while j < matrix_width and not go_longer:
+                last_y_coordinate = temp_coordinates[len(temp_coordinates) - 1][0]
+                if not [last_y_coordinate, j] in temp_coordinates:
+                    temp_buffer.append(matrix[last_y_coordinate][j])
+                    temp_coordinates.append([last_y_coordinate, j])
+                    temp_reward = calculate_reward(temp_buffer, sequences, rewards)
+                    if temp_reward > total_reward:
+                        total_reward = temp_reward
+                        buffer_solution = copy.deepcopy(temp_buffer)
+                        coordinates = copy.deepcopy(temp_coordinates)
+                    
+                    if i < buffer_size:
+                        i += 1
+                        j = 0
+                        go_longer = True
+                    else:
+                        temp_buffer.pop()
+                        temp_coordinates.pop()
+                        j += 1
+                    
                 else:
-                    temp_buffer.pop()
-                    temp_coordinates.pop()
                     j += 1
-                
-            else:
-                j += 1
-        
-        if not go_longer:
-            i -= 1
-            j = temp_coordinates[len(temp_coordinates) - 1][0] + 1
-            temp_buffer.pop()
-            temp_coordinates.pop()
+            
+            if not go_longer:
+                i -= 1
+                j = temp_coordinates[len(temp_coordinates) - 1][0] + 1
+                temp_buffer.pop()
+                temp_coordinates.pop()
 
 # coordinates formatting
 coordinates = [[b + 1, a + 1] for [a, b] in coordinates]
