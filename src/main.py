@@ -1,17 +1,26 @@
-import copy, time, random
+import copy, time, random, os
 from functions import *
 
 
 # player choose input from file or randomized
 while True:
     input_choice = input("Apakah input dari file atau acak? (file/acak)\n")
-    if input_choice == "file" or input_choice == "acak":
+    print()
+    if input_choice in ["file", "acak"]:
         break
+    
     print("Input tidak valid, coba lagi.\n")
 
 if input_choice == "file":
     # read input file
-    input_file_name = input("Masukkan nama file input: (file berada di dalam folder test)\n")
+    while True:
+        input_file_name = input("Masukkan nama file input: (file berada di dalam folder test)\n")
+        print()
+        if os.path.isfile("test/" + input_file_name):
+            break
+
+        print("File tidak ditemukan.\n")
+        
     with open("test/" + input_file_name, "r") as file_input:
         
         # read buffer size
@@ -53,6 +62,8 @@ else:
         num_of_sequences = int(input())
         max_size_of_sequences = int(input())
 
+        print()
+
         # check input validity
         input_valid = True
         if num_of_token <= 0:
@@ -89,9 +100,10 @@ else:
         
         if input_valid:
             break
+
+        print()
     
     # random matrix, sequence, and reward generator
-    print()
     print("Generating matrix ...")
     matrix = [random.choices(tokens, k=matrix_width) for i in range(matrix_height)]
     print("Generating sequences and rewards ...")
@@ -104,8 +116,9 @@ else:
             sequences[i] = sequence
         rewards[i] = random.randrange(-50, 51, 10)
     
-    # display matrix, sequences, and rewards
     print()
+    
+    # display matrix, sequences, and rewards
     print("Matriks yang dihasilkan:")
     for i in range(matrix_height):
         for j in range(matrix_width):
@@ -127,17 +140,18 @@ else:
                 print()
         
         print(rewards[i])
+    
+    print()
 
 # find the solution
-
-# min_sequences_length = min(map(len, sequences))
-# max_rewards = sum(rewards)
 
 # player choose starting position
 while True:
     start_position = int(input(f"Pilih posisi kolom token di barisan paling atas: (1 - {matrix_width})\n")) - 1
+    print()
     if 0 <= start_position <= matrix_width - 1:
         break
+    
     print("Input tidak valid, coba lagi.\n")
 
 start_time = time.time()
@@ -227,20 +241,27 @@ coordinates = [[b + 1, a + 1] for [a, b] in coordinates]
 end_time = time.time()
 
 # display result to terminal
-print()
 print("Hasil pencarian:")
-print()
 
 print(total_reward)
 print(*buffer_solution, sep=" ")
 for i in coordinates:
     print(f"{i[0]}, {i[1]}")
 
+print()
+
 duration = end_time - start_time
-print(f"\n{round(duration * 1000)} ms\n")
+print(f"{round(duration * 1000)} ms\n")
 
 # ask user to save the result
-save_solution = input("Apakah ingin menyimpan solusi? (y/n)\n")
+while True:
+    save_solution = input("Apakah ingin menyimpan solusi? (y/n)\n")
+    print()
+    if save_solution in ["y", "n"]:
+        break
+
+    print("Input tidak valid.\n")
+
 if save_solution == "y":
     output_file_name = input("Masukkan nama file output: (file berada di dalam folder test)\n")
     with open("test/" + output_file_name, "w") as file_output:
