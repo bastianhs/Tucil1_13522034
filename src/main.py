@@ -236,7 +236,8 @@ print(*buffer_solution, sep=" ")
 for i in coordinates:
     print(f"{i[0]}, {i[1]}")
 
-print(f"\n{(end_time - start_time) * 1000} ms\n")
+duration = end_time - start_time
+print(f"\n{round(duration * 1000)} ms\n")
 
 # ask user to save the result
 save_solution = input("Apakah ingin menyimpan solusi? (y/n)\n")
@@ -260,4 +261,4 @@ if save_solution == "y":
             file_output.write(f"{i[0]}, {i[1]}\n")
         
         # write time execution
-        file_output.write(f"\n{(end_time - start_time) * 1000} ms\n")
+        file_output.write(f"\n{round(duration * 1000)} ms\n")
