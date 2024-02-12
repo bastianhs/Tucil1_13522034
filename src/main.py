@@ -99,7 +99,9 @@ else:
     rewards = [0 for i in range(num_of_sequences)]
     for i in range(num_of_sequences):
         sequence_size = random.randrange(2, max_size_of_sequences + 1)
-        sequences[i] = random.choices(tokens, k=sequence_size)
+        sequence = random.choices(tokens, k=sequence_size)
+        if not sequence in sequences:
+            sequences[i] = sequence
         rewards[i] = random.randrange(-50, 51, 10)
     
     # display matrix, sequences, and rewards
@@ -117,16 +119,14 @@ else:
     
     print("Sequence dan reward yang dihasilkan:")
     for i in range(num_of_sequences):
-        print(f"{i + 1}. ", end="")
         for j in range(len(sequences[i])):
-            print(sequences[i][j], end=" ")
+            print(sequences[i][j], end="")
             if j < len(sequences[i]) - 1:
                 print(end=" ")
             else:
                 print()
         
-        print(f"   {rewards[i]}")
-        print()
+        print(rewards[i])
 
 # find the solution
 

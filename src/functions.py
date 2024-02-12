@@ -34,10 +34,10 @@ def is_sublist(sublist, list):
         return result
 
 
-def calculate_reward(buffer_list, sequence_list, reward_list):
+def calculate_reward(buffer, sequence_list, reward_list):
     reward = 0
     for i in range(len(sequence_list)):
-        if is_sublist(sequence_list[i], buffer_list):
+        if is_sublist(sequence_list[i], buffer):
             reward += reward_list[i]
     
     return reward
