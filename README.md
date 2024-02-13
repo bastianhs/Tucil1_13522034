@@ -10,16 +10,28 @@ Solving Cyberpunk 2077 Breach Protocol puzzle using brute force algorithm
 
 ## How to run
 
+1. Clone this repository
+
 ```
 git clone https://github.com/bastianhs/Tucil1_13522034.git
 ```
+
+2. change directory to program's main directory
 
 ```
 cd Tucil1_13522034
 ```
 
+3. run python code
+
 ```
 python src/main.py
+```
+
+or
+
+```
+python3 src/main.py
 ```
 
 ## Input from and output to .txt file
