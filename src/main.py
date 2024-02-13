@@ -28,8 +28,8 @@ if input_choice == "file":
         
         # read matrix dimension
         matrix_dimension = file_input.readline().split()
-        matrix_height = int(matrix_dimension[0])
-        matrix_width = int(matrix_dimension[1])
+        matrix_height = int(matrix_dimension[1])
+        matrix_width = int(matrix_dimension[0])
         
         # read matrix content
         matrix = [file_input.readline().split() for i in range(matrix_height)]
@@ -50,15 +50,15 @@ else:
               1. Banyak token unik
               2. Token unik (dipisahkan dengan spasi)
               3. Ukuran buffer
-              4. Ukuran baris dan kolom matriks (dipisahkan dengan spasi)
+              4. Ukuran kolom dan baris matriks (dipisahkan dengan spasi)
               5. Banyak sekuens
               6. Ukuran maksimal sekuens""")
         num_of_token = int(input())
         tokens = list(input().split(sep=" "))
         buffer_size = int(input())
         matrix_dimension = input().split(sep=" ")
-        matrix_height = int(matrix_dimension[0])
-        matrix_width = int(matrix_dimension[1])
+        matrix_height = int(matrix_dimension[1])
+        matrix_width = int(matrix_dimension[0])
         num_of_sequences = int(input())
         max_size_of_sequences = int(input())
 
